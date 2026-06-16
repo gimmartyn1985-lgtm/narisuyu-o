@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ru-RU">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Админка работ | narisuyu_o</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#f7f1e8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body class="admin-body">
+    <header class="site-header admin-header">
+      <a class="brand" href="/">narisuyu_o</a>
+      <nav class="nav" aria-label="Навигация админки">
+        <a href="/">Сайт</a>
+        <a href="#publish">Новая работа</a>
+        <a href="#current-works">Каталог</a>
+      </nav>
+      <span class="admin-badge" id="access-badge">Токен не сохранен</span>
+    </header>
+
+    <main class="admin-main">
+      <section class="admin-hero" aria-labelledby="admin-title">
+        <div class="admin-hero-copy">
+          <p class="eyebrow">Простая админка</p>
+          <h1 id="admin-title" class="admin-title">Добавление работ без правки кода</h1>
+          <p class="lead admin-lead">
+            Здесь можно загрузить новое изображение, добавить название и описание, а затем отправить
+            все прямо в GitHub. После публикации Vercel подтянет новую версию сайта из ветки
+            <strong>main</strong>.
+          </p>
+        </div>
+        <div class="admin-side-note">
+          <h2>Что понадобится</h2>
+          <ul class="admin-list">
+            <li>GitHub fine-grained token с доступом к этому репозиторию</li>
+            <li>готовое изображение работы в JPG, PNG или WebP</li>
+            <li>короткое название и подпись для карточки</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="admin-grid" aria-label="Настройка доступа">
+        <article class="admin-panel">
+          <div class="admin-panel-heading">
+            <p class="eyebrow">Шаг 1</p>
+            <h2>Доступ к GitHub</h2>
+          </div>
+          <form class="admin-form" id="access-form">
+            <label class="admin-field">
+              <span>Репозиторий</span>
+              <input class="admin-input" id="repo-field" type="text" placeholder="owner/repo" autocomplete="off">
+            </label>
+            <label class="admin-field">
+              <span>Ветка</span>
+              <input class="admin-input" id="branch-field" type="text" placeholder="main" autocomplete="off">
+            </label>
+            <label class="admin-field">
+              <span>GitHub token</span>
+              <input class="admin-input" id="token-field" type="password" placeholder="github_pat_..." autocomplete="off">
+            </label>
+            <div class="admin-actions">
+              <button class="button primary" type="submit">Сохранить доступ</button>
+              <button class="button secondary" id="clear-access" type="button">Очистить токен</button>
+            </div>
+          </form>
+          <p class="admin-help" id="access-status">
+            Токен сохраняется только в браузере на этом устройстве. В код сайта он не попадает.
+          </p>
+        </article>
+
+        <article class="admin-panel">
+          <div class="admin-panel-heading">
+            <p class="eyebrow">Шаг 2</p>
+            <h2>Как проходит публикация</h2>
+          </div>
+          <ol class="admin-steps">
+            <li>Выбери изображение и заполни карточку работы.</li>
+            <li>Нажми кнопку публикации внизу формы.</li>
+            <li>Админка добавит файл в папку <code>фото/</code> и обновит <code>works.json</code>.</li>
+            <li>Через пару минут новая работа появится на основном сайте.</li>
+          </ol>
+          <p class="admin-help">
+            Лучше использовать токен от аккаунта, который владеет этим GitHub-репозиторием и связан
+            с Vercel. Так автодеплой проходит ровнее.
+          </p>
+        </article>
+      </section>
+
+      <section class="admin-workflow" id="publish">
+        <article class="admin-panel admin-editor">
+          <div class="admin-panel-heading">
+            <p class="eyebrow">Шаг 3</p>
+            <h2>Новая работа</h2>
+          </div>
+          <form class="admin-form" id="work-form">
+            <label class="admin-field">
+              <span>Изображение работы</span>
+              <input class="admin-input admin-file-input" id="image-field" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
+            </label>
+            <label class="admin-field">
+              <span>Название</span>
+              <input class="admin-input" id="title-field" type="text" placeholder="Например: Портрет кота">
+            </label>
+            <label class="admin-field">
+              <span>Подпись</span>
+              <input class="admin-input" id="meta-field" type="text" placeholder="Например: графитный рисунок по фото">
+            </label>
+            <label class="admin-field">
+              <span>Описание для сайта</span>
+              <textarea class="admin-input admin-textarea" id="alt-field" rows="4" placeholder="Коротко опиши, что изображено на работе"></textarea>
+            </label>
+            <div class="admin-actions">
+              <button class="button primary" id="publish-button" type="submit">Опубликовать работу</button>
+            </div>
+          </form>
+          <p class="admin-help" id="publish-status">
+            После публикации админка сразу покажет результат и ссылку на коммит.
+          </p>
+        </article>
+
+        <aside class="admin-preview-card">
+          <div class="admin-panel-heading">
+            <p class="eyebrow">Превью</p>
+            <h2>Как это будет выглядеть</h2>
+          </div>
+          <div class="admin-preview-media" id="preview-empty">Изображение появится здесь после выбора файла.</div>
+          <img class="admin-preview-image" id="preview-image" alt="" hidden>
+          <div class="admin-preview-copy">
+            <strong id="preview-title">Новая работа</strong>
+            <p id="preview-meta">Подпись появится здесь после заполнения формы.</p>
+          </div>
+        </aside>
+      </section>
+
+      <section class="section admin-catalog" id="current-works" aria-labelledby="current-works-title">
+        <div class="section-heading">
+          <p class="eyebrow">Каталог</p>
+          <h2 id="current-works-title">Текущие работы</h2>
+          <p id="works-count">Загружаю текущий список работ…</p>
+        </div>
+        <div class="admin-works-grid" id="works-list"></div>
+      </section>
+    </main>
+
+    <script src="admin.js"></script>
+  </body>
+</html>

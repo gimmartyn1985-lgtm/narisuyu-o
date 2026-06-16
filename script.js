@@ -1,47 +1,4 @@
-const works = [
-  {
-    title: "Портрет кота",
-    meta: "графитный рисунок по фото",
-    image: "фото/IMG_6692.jpg",
-    alt: "Графитный портрет кота с маленьким исходным фото в углу"
-  },
-  {
-    title: "Девушка с лошадью",
-    meta: "портрет человека и животного",
-    image: "фото/IMG_6693.jpg",
-    alt: "Графитный рисунок девушки рядом с лошадью"
-  },
-  {
-    title: "Портрет лошади",
-    meta: "графитный рисунок по фото",
-    image: "фото/IMG_6694.jpg",
-    alt: "Графитный рисунок лошади с маленьким референсом внизу"
-  },
-  {
-    title: "Лошадь с венком",
-    meta: "животные и детали характера",
-    image: "фото/IMG_6695.jpg",
-    alt: "Графитный портрет лошади с цветами на голове"
-  },
-  {
-    title: "Собака и кот",
-    meta: "парный портрет питомцев",
-    image: "фото/IMG_6696.jpg",
-    alt: "Графитный рисунок собаки и кота по двум фотографиям"
-  },
-  {
-    title: "Пара по фото",
-    meta: "портрет важного момента",
-    image: "фото/IMG_6697.jpg",
-    alt: "Слева исходная фотография пары, справа готовый графитный рисунок"
-  },
-  {
-    title: "Девушка с котами",
-    meta: "цветной карандаш и теплые оттенки",
-    image: "фото/IMG_6699.jpg",
-    alt: "Цветной рисунок девушки с тремя котами"
-  }
-];
+let works = [];
 
 const gallery = document.querySelector("#gallery");
 const prevButton = document.querySelector("#carousel-prev");
@@ -51,7 +8,20 @@ const lightboxImage = document.querySelector("#lightbox-image");
 const lightboxCaption = document.querySelector("#lightbox-caption");
 const closeButton = document.querySelector(".lightbox-close");
 
+function renderEmptyGallery() {
+  const emptyState = document.createElement("div");
+  emptyState.className = "gallery-empty";
+  emptyState.textContent = "Работы появятся здесь после первой публикации.";
+
+  gallery.replaceChildren(emptyState);
+}
+
 function renderGallery() {
+  if (!works.length) {
+    renderEmptyGallery();
+    return;
+  }
+
   gallery.replaceChildren(
     ...works.map((work, index) => {
       const card = document.createElement("button");
@@ -91,13 +61,16 @@ function renderGallery() {
 
 function updateCarouselButtons() {
   const maxScrollLeft = gallery.scrollWidth - gallery.clientWidth;
-  prevButton.disabled = gallery.scrollLeft <= 4;
-  nextButton.disabled = gallery.scrollLeft >= maxScrollLeft - 4;
+  const hasWorks = works.length > 0;
+
+  prevButton.disabled = !hasWorks || gallery.scrollLeft <= 4;
+  nextButton.disabled = !hasWorks || gallery.scrollLeft >= maxScrollLeft - 4;
 }
 
 function scrollGallery(direction) {
   const card = gallery.querySelector(".art-card");
   if (!card) return;
+
   const gap = 14;
   const amount = card.getBoundingClientRect().width + gap;
 
@@ -122,9 +95,27 @@ function closeLightbox() {
   document.body.style.overflow = "";
 }
 
+async function loadWorks() {
+  try {
+    const response = await fetch("works.json", { cache: "no-store" });
+    if (!response.ok) {
+      throw new Error("Не удалось загрузить works.json");
+    }
+
+    const data = await response.json();
+    works = Array.isArray(data.works) ? data.works : [];
+  } catch (error) {
+    console.error(error);
+    works = [];
+  }
+
+  renderGallery();
+  updateCarouselButtons();
+}
+
 gallery.addEventListener("click", (event) => {
   const card = event.target.closest(".art-card");
-  if (!card) return;
+  if (!card || !works.length) return;
   openLightbox(works[Number(card.dataset.index)]);
 });
 
@@ -142,5 +133,4 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && !lightbox.hidden) closeLightbox();
 });
 
-renderGallery();
-updateCarouselButtons();
+loadWorks();

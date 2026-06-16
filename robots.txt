@@ -1,7 +1,9 @@
 User-agent: *
 Allow: /
+Disallow: /admin
 
 User-agent: Yandex
 Allow: /
+Disallow: /admin
 
 Sitemap: https://narisuyu-o.vercel.app/sitemap.xml
