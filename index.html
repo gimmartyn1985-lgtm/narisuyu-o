@@ -36,10 +36,7 @@
     <link rel="canonical" href="https://narisuyu-o.vercel.app/">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    >
+    <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script type="application/ld+json">
       {
@@ -191,20 +188,10 @@
             <a class="button primary" href="#portfolio">Смотреть работы</a>
             <a class="button secondary" href="https://t.me/narisuyu_o" target="_blank" rel="noopener noreferrer">Заказать в Telegram</a>
           </div>
-          <dl class="proof-grid" aria-label="Коротко о художнице">
-            <div>
-              <dt>5.0</dt>
-              <dd>оценка на Avito</dd>
-            </div>
-            <div>
-              <dt>59</dt>
-              <dd>отзывов клиентов</dd>
-            </div>
-            <div>
-              <dt>583</dt>
-              <dd>подписчика в Telegram</dd>
-            </div>
-          </dl>
+          <p class="hero-note">
+            Без предоплаты, с фото готовой работы и сканом для печати. Если нужен оригинал,
+            отправку по России можно обсудить отдельно.
+          </p>
         </div>
 
         <div class="hero-gallery" aria-label="Примеры рисунков">
@@ -222,15 +209,15 @@
 
       <section class="intro-band" aria-label="Основные преимущества">
         <div class="intro-item">
-          <span>01</span>
+          <strong>По вашим фото</strong>
           <p>Рисунок создается по вашим фотографиям, с вниманием к характеру и деталям.</p>
         </div>
         <div class="intro-item">
-          <span>02</span>
+          <strong>Аккуратные сроки</strong>
           <p>Срок выполнения обычно от 1 до 7 дней, в зависимости от сложности.</p>
         </div>
         <div class="intro-item">
-          <span>03</span>
+          <strong>Спокойный заказ</strong>
           <p>Оплата после готового результата. Цена договорная, без фиксированного прайса.</p>
         </div>
       </section>
@@ -240,19 +227,20 @@
           <p class="eyebrow">Каталог</p>
           <h2 id="portfolio-title">Мои работы</h2>
           <p>
-            Галерея сделана модульно: новые рисунки можно добавлять постепенно, сохраняя аккуратную
-            сетку и фильтры.
+            Здесь собраны сами рисунки, без скриншотов из Telegram. Листайте галерею по стрелкам
+            или свайпом, чтобы спокойно посмотреть каждую работу.
           </p>
         </div>
 
-        <div class="filters" aria-label="Фильтры работ">
-          <button class="filter-button active" type="button" data-filter="all">Все</button>
-          <button class="filter-button" type="button" data-filter="pets">Питомцы</button>
-          <button class="filter-button" type="button" data-filter="people">Люди</button>
-          <button class="filter-button" type="button" data-filter="process">Из блога</button>
+        <div class="portfolio-toolbar">
+          <p class="portfolio-hint">Нажмите на работу, чтобы открыть ее крупнее.</p>
+          <div class="carousel-controls" aria-label="Навигация по работам">
+            <button class="carousel-button" id="carousel-prev" type="button" aria-label="Предыдущая работа">←</button>
+            <button class="carousel-button" id="carousel-next" type="button" aria-label="Следующая работа">→</button>
+          </div>
         </div>
 
-        <div class="gallery-grid" id="gallery" aria-live="polite"></div>
+        <div class="gallery-track" id="gallery" aria-live="polite"></div>
       </section>
 
       <section class="section split-section" id="process" aria-labelledby="process-title">
@@ -292,18 +280,25 @@
 
       <section class="section about-section" id="about" aria-labelledby="about-title">
         <div class="about-image">
-          <img src="IMG_6676.PNG" alt="Telegram-канал художницы Ани">
+          <img src="фото/IMG_6699.jpg" alt="Цветной портрет девушки с тремя котами">
         </div>
         <div class="about-copy">
           <p class="eyebrow">Об Ане</p>
-          <h2 id="about-title">Юная художница с большим вниманием к людям и хвостикам</h2>
+          <h2 id="about-title">Художница из Рубцовска, которая рисует с теплом и вниманием</h2>
           <p>
-            Аня из Алтайского края ведет Telegram-канал, показывает процесс, делится работами и
-            собирает вокруг себя людей, которым важен живой, личный рисунок.
+            Аня живет в Рубцовске, в Алтайском крае, и с детства рисует людей, питомцев и памятные
+            сюжеты по фотографиям. Последние месяцы она активно берет заказы и постепенно собирает
+            свое портфолио из работ, где важны не только сходство, но и настроение.
           </p>
           <p>
-            В ее портретах много мягкого карандашного штриха, теплых цветовых акцентов и эмоций:
-            от семейных сцен до любимых животных, которых хочется сохранить не только на фото.
+            У Ани дома три кота, поэтому в рисунках с хвостиками особенно много наблюдательности:
+            она внимательно передает взгляд, шерсть, позу и характер. Кроме питомцев, можно заказать
+            портрет человека, пары, семьи, а также рисунок машины или дома.
+          </p>
+          <p>
+            Обычно на одну работу уходит от нескольких часов до нескольких дней, в зависимости от
+            сложности. После завершения Аня отправляет фото готового рисунка и скан в хорошем
+            качестве, чтобы изображение можно было сохранить или распечатать.
           </p>
           <a class="button primary compact" href="https://t.me/narisuyu_o" target="_blank" rel="noopener noreferrer">
             Перейти в Telegram
@@ -313,8 +308,8 @@
 
       <section class="section trust-section" aria-labelledby="trust-title">
         <div class="section-heading">
-          <p class="eyebrow">Доверие</p>
-          <h2 id="trust-title">Понятные условия без лишнего давления</h2>
+          <p class="eyebrow">Условия и доставка</p>
+          <h2 id="trust-title">Понятный заказ и спокойное получение работы</h2>
         </div>
         <div class="trust-grid">
           <article>
@@ -322,12 +317,12 @@
             <p>Оплата происходит после готового результата, чтобы клиент видел рисунок перед оплатой.</p>
           </article>
           <article>
-            <h3>Скан для печати</h3>
-            <p>Кроме фото готовой работы можно получить скан в хорошем качестве.</p>
+            <h3>Фото и скан</h3>
+            <p>Готовая работа отправляется в цифровом виде: фото рисунка и скан в хорошем качестве для печати.</p>
           </article>
           <article>
-            <h3>Живой блог</h3>
-            <p>В Telegram есть публикации, реакции, примеры работ и новости о заказах.</p>
+            <h3>Отправка по России</h3>
+            <p>Если нужен оригинал, отправку по России можно обсудить заранее. Оригиналы обычно отправляются отдельно и по договоренности.</p>
           </article>
         </div>
       </section>

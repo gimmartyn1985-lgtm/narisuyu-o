@@ -1,97 +1,79 @@
 const works = [
   {
-    title: "Питомцы в цвете",
-    meta: "цветной карандаш · по фото",
-    category: "pets",
-    image: "IMG_6674.jpg",
-    alt: "Три портрета с котами и людьми в цветном карандаше"
+    title: "Портрет кота",
+    meta: "графитный рисунок по фото",
+    image: "фото/IMG_6692.jpg",
+    alt: "Графитный портрет кота с маленьким исходным фото в углу"
   },
   {
-    title: "Семейный портрет",
-    meta: "графит · семья и питомец",
-    category: "people",
-    image: "IMG_6665.jpg",
-    alt: "Семейный портрет с ребенком и собакой"
+    title: "Девушка с лошадью",
+    meta: "портрет человека и животного",
+    image: "фото/IMG_6693.jpg",
+    alt: "Графитный рисунок девушки рядом с лошадью"
   },
   {
-    title: "Портрет с хаски",
-    meta: "цветной карандаш · питомец",
-    category: "pets",
-    image: "IMG_6666.jpg",
-    alt: "Женщина обнимает собаку хаски"
+    title: "Портрет лошади",
+    meta: "графитный рисунок по фото",
+    image: "фото/IMG_6694.jpg",
+    alt: "Графитный рисунок лошади с маленьким референсом внизу"
   },
   {
-    title: "Портреты людей",
-    meta: "графит · подборка",
-    category: "people",
-    image: "IMG_6671.jpg",
-    alt: "Коллаж портретов людей карандашом"
+    title: "Лошадь с венком",
+    meta: "животные и детали характера",
+    image: "фото/IMG_6695.jpg",
+    alt: "Графитный портрет лошади с цветами на голове"
   },
   {
-    title: "Девушка с котом",
-    meta: "цветной карандаш · питомец",
-    category: "pets",
-    image: "IMG_6668.jpg",
-    alt: "Девушка держит кота на руках"
+    title: "Собака и кот",
+    meta: "парный портрет питомцев",
+    image: "фото/IMG_6696.jpg",
+    alt: "Графитный рисунок собаки и кота по двум фотографиям"
   },
   {
-    title: "Малыш",
-    meta: "цветной карандаш · портрет",
-    category: "people",
-    image: "IMG_6667.jpg",
-    alt: "Портрет маленького ребенка цветными карандашами"
+    title: "Пара по фото",
+    meta: "портрет важного момента",
+    image: "фото/IMG_6697.jpg",
+    alt: "Слева исходная фотография пары, справа готовый графитный рисунок"
   },
   {
-    title: "Telegram-канал",
-    meta: "блог · процесс и новости",
-    category: "process",
-    image: "IMG_6676.PNG",
-    alt: "Скриншот Telegram-канала художницы"
-  },
-  {
-    title: "Работа над заказами",
-    meta: "блог · реакции подписчиков",
-    category: "process",
-    image: "IMG_6673.jpg",
-    alt: "Скриншот поста Telegram о заказах"
-  },
-  {
-    title: "Условия работы",
-    meta: "блог · без предоплаты",
-    category: "process",
-    image: "IMG_6670.jpg",
-    alt: "Скриншот с условиями работы художницы"
+    title: "Девушка с котами",
+    meta: "цветной карандаш и теплые оттенки",
+    image: "фото/IMG_6699.jpg",
+    alt: "Цветной рисунок девушки с тремя котами"
   }
 ];
 
 const gallery = document.querySelector("#gallery");
-const filterButtons = document.querySelectorAll(".filter-button");
+const prevButton = document.querySelector("#carousel-prev");
+const nextButton = document.querySelector("#carousel-next");
 const lightbox = document.querySelector("#lightbox");
 const lightboxImage = document.querySelector("#lightbox-image");
 const lightboxCaption = document.querySelector("#lightbox-caption");
 const closeButton = document.querySelector(".lightbox-close");
 
-function renderGallery(filter = "all") {
-  const selectedWorks = filter === "all" ? works : works.filter((work) => work.category === filter);
-
+function renderGallery() {
   gallery.replaceChildren(
-    ...selectedWorks.map((work, index) => {
+    ...works.map((work, index) => {
       const card = document.createElement("button");
       card.className = "art-card";
       card.type = "button";
-      card.dataset.index = String(works.indexOf(work));
+      card.dataset.index = String(index);
       card.setAttribute("aria-label", `Открыть работу: ${work.title}`);
+
+      const figure = document.createElement("div");
+      figure.className = "art-figure";
 
       const image = document.createElement("img");
       image.src = work.image;
       image.alt = work.alt;
       image.loading = index < 3 ? "eager" : "lazy";
+      figure.append(image);
 
       const meta = document.createElement("span");
       meta.className = "art-meta";
 
       const label = document.createElement("span");
-      label.textContent = work.category === "process" ? "из блога" : "портфолио";
+      label.textContent = "портфолио";
 
       const title = document.createElement("strong");
       title.textContent = work.title;
@@ -100,11 +82,29 @@ function renderGallery(filter = "all") {
       details.textContent = work.meta;
 
       meta.append(label, title, details);
-      card.append(image, meta);
+      card.append(figure, meta);
 
       return card;
     })
   );
+}
+
+function updateCarouselButtons() {
+  const maxScrollLeft = gallery.scrollWidth - gallery.clientWidth;
+  prevButton.disabled = gallery.scrollLeft <= 4;
+  nextButton.disabled = gallery.scrollLeft >= maxScrollLeft - 4;
+}
+
+function scrollGallery(direction) {
+  const card = gallery.querySelector(".art-card");
+  if (!card) return;
+  const gap = 14;
+  const amount = card.getBoundingClientRect().width + gap;
+
+  gallery.scrollBy({
+    left: amount * direction,
+    behavior: "smooth"
+  });
 }
 
 function openLightbox(work) {
@@ -122,19 +122,16 @@ function closeLightbox() {
   document.body.style.overflow = "";
 }
 
-filterButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    filterButtons.forEach((item) => item.classList.remove("active"));
-    button.classList.add("active");
-    renderGallery(button.dataset.filter);
-  });
-});
-
 gallery.addEventListener("click", (event) => {
   const card = event.target.closest(".art-card");
   if (!card) return;
   openLightbox(works[Number(card.dataset.index)]);
 });
+
+gallery.addEventListener("scroll", updateCarouselButtons);
+
+prevButton.addEventListener("click", () => scrollGallery(-1));
+nextButton.addEventListener("click", () => scrollGallery(1));
 
 closeButton.addEventListener("click", closeLightbox);
 lightbox.addEventListener("click", (event) => {
@@ -146,3 +143,4 @@ document.addEventListener("keydown", (event) => {
 });
 
 renderGallery();
+updateCarouselButtons();
